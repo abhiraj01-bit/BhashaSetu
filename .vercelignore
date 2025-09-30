@@ -1,7 +1,14 @@
 node_modules
 .env.local
 .env.*.local
-dist
 server
 test-gemini.js
 dev-check.js
+vite.config.server.ts
+netlify
+.builder
+AGENTS.md
+DEPLOY_VERCEL.md
+FIXES_SUMMARY.md
+GEMINI_API_STATUS.md
+THEME_GUIDE.md

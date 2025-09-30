@@ -60,7 +60,10 @@ async function translateWithGemini(apiKey, body) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       contents: [
-        { role: "user", parts: [{ text: `${prompt}\n\nTEXT:\n${body.text}` }] }
+        { role: "user", parts: [{ text: `${prompt}
+
+TEXT:
+${body.text}` }] }
       ],
       generationConfig: { temperature: 0.2 }
     }),
