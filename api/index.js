@@ -1,24 +1,29 @@
-import express from 'express';
-import cors from 'cors';
 import { handleDemo } from './demo.js';
 import { handleTranslate } from './translate.js';
 
-const app = express();
+export default function handler(req, res) {
+  // Enable CORS
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
 
-app.use(cors());
-app.use(express.json({ limit: "2mb" }));
-app.use(express.urlencoded({ extended: true }));
-
-app.get("/", (_req, res) => {
-  res.json({ status: "BhashaSetu API is running" });
-});
-
-app.get("/api/ping", (_req, res) => {
-  const ping = process.env.PING_MESSAGE ?? "ping";
-  res.json({ message: ping });
-});
-
-app.get("/api/demo", handleDemo);
-app.post("/api/translate", handleTranslate);
-
-export default app;
+  const { url, method } = req;
+  
+  if (url === '/api' && method === 'GET') {
+    res.json({ status: "BhashaSetu API is running" });
+  } else if (url === '/api/ping' && method === 'GET') {
+    const ping = process.env.PING_MESSAGE ?? "ping";
+    res.json({ message: ping });
+  } else if (url === '/api/demo' && method === 'GET') {
+    handleDemo(req, res);
+  } else if (url === '/api/translate' && method === 'POST') {
+    handleTranslate(req, res);
+  } else {
+    res.status(404).json({ error: 'Not found' });
+  }
+}
