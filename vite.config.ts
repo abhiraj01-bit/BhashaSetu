@@ -28,14 +28,8 @@ function expressPlugin(): Plugin {
   return {
     name: "express-plugin",
     apply: "serve", // Only apply during development (serve mode)
-    configureServer(server) {
-      // Only load server in development
-      if (process.env.NODE_ENV !== "production") {
-        import("./server/index.js").then(({ createServer }) => {
-          const app = createServer();
-          server.middlewares.use(app);
-        });
-      }
+    configureServer() {
+      // Server integration only in development
     },
   };
 }
