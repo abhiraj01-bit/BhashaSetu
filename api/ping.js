@@ -8,8 +8,6 @@ export default function handler(req, res) {
     return;
   }
 
-  const response = {
-    message: "Hello from Express server",
-  };
-  res.status(200).json(response);
+  const ping = process.env.PING_MESSAGE ?? "ping";
+  res.json({ message: ping });
 }
