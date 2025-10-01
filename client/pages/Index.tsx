@@ -215,11 +215,7 @@ export default function Index() {
               <Button variant="outline" onClick={() => download(translated, `translation_${Date.now()}.txt`)} disabled={!translated.trim()}>Download Translation</Button>
               <Button variant="secondary" onClick={() => download(makeParallel(ocrOut, translated), `parallel_${Date.now()}.tsv`)} disabled={!translated.trim() || !ocrOut.trim()}>Export Parallel TSV</Button>
             </div>
-            <div className="mt-6 rounded-lg border bg-accent/40 p-4 text-sm text-muted-foreground">
-              <p>
-                Tip: For offline translation, set LIBRETRANSLATE_URL in server env and host LibreTranslate on your network. The app will automatically use it.
-              </p>
-            </div>
+
           </div>
         </div>
       </section>

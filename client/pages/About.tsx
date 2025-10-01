@@ -14,8 +14,8 @@ export default function About() {
     },
     {
       icon: Globe,
-      title: "AI Translation",
-      description: "Powered by Google Gemini AI for natural, context-aware translations to English",
+      title: "AI/ML Translation",
+      description: "Powered by Google Gemini AI/ML for natural, context-aware translations to English",
       color: "bg-green-500/10 text-green-600 dark:text-green-400"
     },
     {
@@ -64,11 +64,11 @@ export default function About() {
             >
               <Badge variant="secondary" className="mb-4">About BhashaSetu</Badge>
               <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-neutral-900/90 mix-blend-multiply dark:text-white mb-6">
-                Bridging Languages with AI
+                Bridging Languages with AI/ML
               </h1>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
                 BhashaSetu (भाषा सेतु) means "Language Bridge" in Nepali. We're breaking down language barriers 
-                by making Nepali and Sinhala text accessible through advanced OCR and AI-powered translation.
+                by making Nepali and Sinhala text accessible through advanced OCR and AI/ML-powered translation.
               </p>
             </motion.div>
           </div>
