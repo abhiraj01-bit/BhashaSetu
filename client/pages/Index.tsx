@@ -93,7 +93,7 @@ export default function Index() {
               transition={{ duration: 0.6 }}
               className="text-4xl md:text-6xl font-extrabold tracking-tight text-neutral-900/90 mix-blend-multiply dark:text-white"
             >
-              AI OCR + Translation for Nepali & Sinhala → English
+              AI/ML OCR + Translation for Nepali & Sinhala → English
             </motion.h1>
             <div className="mt-8 flex items-center justify-center gap-3">
               <Button size="lg" onClick={() => document.getElementById("try")?.scrollIntoView({ behavior: "smooth" })}>Get Started</Button>
