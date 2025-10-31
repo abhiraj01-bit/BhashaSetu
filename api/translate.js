@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
   try {
     const body = req.body;
-    if (!body?.text || body.target !== "en") {
+    if (!body?.text || !body.target) {
       res.status(400).json({ error: "Invalid payload" });
       return;
     }

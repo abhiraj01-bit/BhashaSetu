@@ -6,7 +6,7 @@ const has = (s?: string) => typeof s === "string" && s.length > 0;
 export const handleTranslate: RequestHandler = async (req, res) => {
   try {
     const body = req.body as TranslateRequest;
-    if (!body?.text || body.target !== "en") {
+    if (!body?.text || !body.target) {
       res.status(400).send("Invalid payload");
       return;
     }
