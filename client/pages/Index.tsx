@@ -77,17 +77,33 @@ export default function Index() {
     setOcrOut("");
     try {
       if (mode === "text") {
-        setOcrOut(upload.text ?? "");
+        await directTranslate();
       } else if (upload.file) {
         const lang = upload.lang === "ne" ? "nep" : upload.lang === "si" ? "sin" : "auto";
         const fn = isPdf ? ocrPdf : ocrImage;
         const out = await fn(upload.file, lang as any, (p) => setProgress(p));
         setOcrOut(out.text.trim());
       }
+    } catch (e: any) {
+      alert(e.message || "Translation failed");
     } finally {
       setBusy(false);
       setProgress(null);
     }
+  }
+
+  async function directTranslate() {
+    const text = upload.text ?? "";
+    if (!text.trim()) return;
+    
+    const detected = detectScript(text);
+    const req: TranslateRequest = {
+      text,
+      source: upload.lang === "auto" ? (detected === "nep" ? "ne" : detected === "sin" ? "si" : "auto") : upload.lang,
+      target: upload.target,
+    };
+    const resp = await translateText(req);
+    setTranslated(resp.translatedText);
   }
 
   async function doTranslate() {
@@ -218,7 +234,7 @@ export default function Index() {
                   onChange={(e) => setUpload((u) => ({ ...u, text: e.target.value }))}
                 />
                 <div className="mt-4 flex gap-3">
-                  <Button onClick={runOcr} disabled={busy || !(upload.text ?? "").trim()}>Use This Text</Button>
+                  <Button onClick={runOcr} disabled={busy || !(upload.text ?? "").trim()}>Translate</Button>
                   <Button variant="secondary" onClick={() => setUpload((u) => ({ ...u, text: "" }))} disabled={busy}>Clear</Button>
                 </div>
               </div>
