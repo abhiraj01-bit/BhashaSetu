@@ -11,9 +11,44 @@ type Mode = "file" | "text";
 type UploadState = {
   file?: File;
   text?: string;
-  lang: "auto" | "ne" | "si";
-  target: "en";
+  lang: string;
+  target: string;
 };
+
+const languages = [
+  { code: "auto", name: "Auto Detect" },
+  { code: "en", name: "English" },
+  { code: "ne", name: "Nepali (नेपाली)" },
+  { code: "si", name: "Sinhala (සිංහල)" },
+  { code: "hi", name: "Hindi (हिन्दी)" },
+  { code: "bn", name: "Bengali (বাংলা)" },
+  { code: "ta", name: "Tamil (தமிழ்)" },
+  { code: "te", name: "Telugu (తెలుగు)" },
+  { code: "ml", name: "Malayalam (മലയാളം)" },
+  { code: "kn", name: "Kannada (ಕನ್ನಡ)" },
+  { code: "gu", name: "Gujarati (ગુજરાતી)" },
+  { code: "pa", name: "Punjabi (ਪੰਜਾਬੀ)" },
+  { code: "ur", name: "Urdu (اردو)" },
+  { code: "zh", name: "Chinese (中文)" },
+  { code: "ja", name: "Japanese (日本語)" },
+  { code: "ko", name: "Korean (한국어)" },
+  { code: "ar", name: "Arabic (العربية)" },
+  { code: "fr", name: "French (Français)" },
+  { code: "de", name: "German (Deutsch)" },
+  { code: "es", name: "Spanish (Español)" },
+  { code: "pt", name: "Portuguese (Português)" },
+  { code: "ru", name: "Russian (Русский)" },
+  { code: "it", name: "Italian (Italiano)" },
+  { code: "tr", name: "Turkish (Türkçe)" },
+  { code: "th", name: "Thai (ไทย)" },
+  { code: "vi", name: "Vietnamese (Tiếng Việt)" },
+  { code: "id", name: "Indonesian (Bahasa Indonesia)" },
+  { code: "ms", name: "Malay (Bahasa Melayu)" },
+  { code: "tl", name: "Filipino (Tagalog)" },
+  { code: "my", name: "Myanmar (မြန်မာ)" },
+  { code: "km", name: "Khmer (ខ្មែរ)" },
+  { code: "lo", name: "Lao (ລາວ)" }
+];
 
 export default function Index() {
   const [mode, setMode] = useState<Mode>("file");
@@ -63,7 +98,7 @@ export default function Index() {
       const req: TranslateRequest = {
         text: ocrOut,
         source: upload.lang === "auto" ? (detected === "nep" ? "ne" : detected === "sin" ? "si" : "auto") : upload.lang,
-        target: "en",
+        target: upload.target,
       } as TranslateRequest;
       const resp = await translateText(req);
       setTranslated(resp.translatedText);
@@ -93,7 +128,7 @@ export default function Index() {
               transition={{ duration: 0.6 }}
               className="text-4xl md:text-6xl font-extrabold tracking-tight text-neutral-900/90 mix-blend-multiply dark:text-white"
             >
-              AI/ML OCR + Translation for Nepali & Sinhala → English
+              AI/ML OCR + Language Translation
             </motion.h1>
             <div className="mt-8 flex items-center justify-center gap-3">
               <Button size="lg" onClick={() => document.getElementById("try")?.scrollIntoView({ behavior: "smooth" })}>Get Started</Button>
@@ -106,7 +141,7 @@ export default function Index() {
       <section className="container py-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <FeatureCard title="Offline-ready" desc="Use self-hosted LibreTranslate and local OCR for secure, internal networks."/>
-          <FeatureCard title="Script-aware" desc="Optimized for Devanagari (नेपाली) and Sinhala (සිංහල) scripts with better OCR."/>
+          <FeatureCard title="Multi-script OCR" desc="Advanced OCR supporting 30+ languages including Devanagari, Latin, Arabic, and Asian scripts."/>
           <FeatureCard title="Parallel Export" desc="Create TSV parallel corpora for training and fine-tuning translation models."/>
         </div>
       </section>
@@ -123,16 +158,27 @@ export default function Index() {
                   Paste Text
                 </button>
               </div>
-              <div className="flex items-center gap-2 text-sm">
-                <label className="text-muted-foreground">Source</label>
+              <div className="flex items-center gap-2 text-sm flex-wrap">
+                <label className="text-muted-foreground">From</label>
                 <select
-                  className="rounded-md border bg-background px-2 py-1"
+                  className="rounded-md border bg-background px-2 py-1 max-w-[120px]"
                   value={upload.lang}
-                  onChange={(e) => setUpload((u) => ({ ...u, lang: e.target.value as any }))}
+                  onChange={(e) => setUpload((u) => ({ ...u, lang: e.target.value }))}
                 >
-                  <option value="auto">Auto</option>
-                  <option value="ne">Nepali (नेपाली)</option>
-                  <option value="si">Sinhala (සිංහල)</option>
+                  {languages.map(lang => (
+                    <option key={lang.code} value={lang.code}>{lang.name}</option>
+                  ))}
+                </select>
+                <span className="text-muted-foreground">→</span>
+                <label className="text-muted-foreground">To</label>
+                <select
+                  className="rounded-md border bg-background px-2 py-1 max-w-[120px]"
+                  value={upload.target}
+                  onChange={(e) => setUpload((u) => ({ ...u, target: e.target.value }))}
+                >
+                  {languages.filter(lang => lang.code !== "auto").map(lang => (
+                    <option key={lang.code} value={lang.code}>{lang.name}</option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -167,7 +213,7 @@ export default function Index() {
               <div className="mt-4">
                 <textarea
                   className="w-full min-h-48 rounded-md border bg-background p-3 font-mono text-sm"
-                  placeholder="Paste Nepali or Sinhala text here..."
+                  placeholder="Paste text in any language here..."
                   value={upload.text ?? ""}
                   onChange={(e) => setUpload((u) => ({ ...u, text: e.target.value }))}
                 />
@@ -195,7 +241,7 @@ export default function Index() {
                 <h3 className="text-sm font-semibold">Extracted Text</h3>
                 <textarea className="mt-2 w-full min-h-40 rounded-md border bg-background p-3 font-mono text-sm" value={ocrOut} onChange={(e) => setOcrOut(e.target.value)} />
                 <div className="mt-3 flex flex-wrap gap-3">
-                  <Button onClick={doTranslate} disabled={busy}>Translate → English</Button>
+                  <Button onClick={doTranslate} disabled={busy}>Translate → {languages.find(l => l.code === upload.target)?.name || 'Target Language'}</Button>
                   <Button variant="outline" onClick={() => download(ocrOut, `ocr_${Date.now()}.txt`)}>Download OCR</Button>
                 </div>
               </div>
@@ -203,7 +249,7 @@ export default function Index() {
           </div>
 
           <div className="rounded-xl border bg-card/60 backdrop-blur p-6">
-            <h3 className="text-lg font-semibold">English Translation</h3>
+            <h3 className="text-lg font-semibold">{languages.find(l => l.code === upload.target)?.name || 'Target Language'} Translation</h3>
             <p className="text-sm text-muted-foreground">Edit to correct and export for training.</p>
             <textarea
               className="mt-3 w-full min-h-80 rounded-md border bg-background p-3 font-mono text-sm"

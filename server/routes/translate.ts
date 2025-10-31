@@ -92,7 +92,9 @@ async function translateWithHuggingFace(apiKey: string, body: TranslateRequest):
 
 async function translateWithOpenAI(apiKey: string, body: TranslateRequest): Promise<TranslateResponse> {
   const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
-  const prompt = `Translate the following ${body.source === "si" ? "Sinhala" : body.source === "ne" ? "Nepali" : "Nepali or Sinhala"} text to natural, fluent English. Preserve formatting and line breaks.\n\nTEXT:\n${body.text}`;
+  const sourceLang = getLanguageName(body.source);
+  const targetLang = getLanguageName(body.target);
+  const prompt = `Translate the following ${sourceLang} text to natural, fluent ${targetLang}. Preserve formatting and line breaks.\n\nTEXT:\n${body.text}`;
   const r = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: { "Authorization": `Bearer ${apiKey}`, "Content-Type": "application/json" },
@@ -113,7 +115,9 @@ async function translateWithOpenAI(apiKey: string, body: TranslateRequest): Prom
 
 async function translateWithGemini(apiKey: string, body: TranslateRequest): Promise<TranslateResponse> {
   const model = process.env.GEMINI_MODEL || "gemini-2.0-flash-exp";
-  const prompt = `Translate the following ${body.source === "si" ? "Sinhala" : body.source === "ne" ? "Nepali" : "Nepali or Sinhala"} text into natural English. Preserve line breaks.`;
+  const sourceLang = getLanguageName(body.source);
+  const targetLang = getLanguageName(body.target);
+  const prompt = `Translate the following ${sourceLang} text into natural ${targetLang}. Preserve line breaks and formatting.`;
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
   const r = await fetch(url, {
     method: "POST",
@@ -131,7 +135,18 @@ async function translateWithGemini(apiKey: string, body: TranslateRequest): Prom
   return { translatedText: text, provider: "gemini" };
 }
 
-function mapLangToLibre(src: "ne" | "si") {
-  // LibreTranslate uses codes "ne" and "si"
+function mapLangToLibre(src: string) {
   return src;
+}
+
+function getLanguageName(code: string) {
+  const langMap: Record<string, string> = {
+    'en': 'English', 'ne': 'Nepali', 'si': 'Sinhala', 'hi': 'Hindi', 'bn': 'Bengali',
+    'ta': 'Tamil', 'te': 'Telugu', 'ml': 'Malayalam', 'kn': 'Kannada', 'gu': 'Gujarati',
+    'pa': 'Punjabi', 'ur': 'Urdu', 'zh': 'Chinese', 'ja': 'Japanese', 'ko': 'Korean',
+    'ar': 'Arabic', 'fr': 'French', 'de': 'German', 'es': 'Spanish', 'pt': 'Portuguese',
+    'ru': 'Russian', 'it': 'Italian', 'tr': 'Turkish', 'th': 'Thai', 'vi': 'Vietnamese',
+    'id': 'Indonesian', 'ms': 'Malay', 'tl': 'Filipino', 'my': 'Myanmar', 'km': 'Khmer', 'lo': 'Lao'
+  };
+  return langMap[code] || code;
 }

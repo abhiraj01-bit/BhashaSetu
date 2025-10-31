@@ -11,16 +11,17 @@ export interface DemoResponse {
   message: string;
 }
 
-export type SourceLang = "ne" | "si" | "auto";
+export type SourceLang = string | "auto";
+export type TargetLang = string;
 
 export interface TranslateRequest {
   text: string;
-  source: SourceLang; // "ne" (Nepali), "si" (Sinhala), or "auto"
-  target: "en"; // fixed target English for this app
+  source: SourceLang; // any language code or "auto"
+  target: TargetLang; // any target language
 }
 
 export interface TranslateResponse {
   translatedText: string;
   provider: "gemini" | "libre" | "openai" | "huggingface" | "none";
-  detectedSource?: "ne" | "si" | "en" | "unknown";
+  detectedSource?: string;
 }

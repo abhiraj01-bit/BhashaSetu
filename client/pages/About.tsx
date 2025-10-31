@@ -9,13 +9,13 @@ export default function About() {
     {
       icon: Eye,
       title: "Advanced OCR",
-      description: "State-of-the-art optical character recognition optimized for Devanagari and Sinhala scripts",
+      description: "State-of-the-art optical character recognition supporting 30+ languages and multiple scripts",
       color: "bg-blue-500/10 text-blue-600 dark:text-blue-400"
     },
     {
       icon: Globe,
       title: "AI/ML Translation",
-      description: "Powered by Google Gemini AI/ML for natural, context-aware translations to English",
+      description: "Powered by Google Gemini AI/ML for natural, context-aware translations between 30+ languages",
       color: "bg-green-500/10 text-green-600 dark:text-green-400"
     },
     {
@@ -45,7 +45,7 @@ export default function About() {
   ];
 
   const stats = [
-    { label: "Languages Supported", value: "3", desc: "Nepali, Sinhala, English" },
+    { label: "Languages Supported", value: "30+", desc: "Including Asian, European & more" },
     { label: "File Formats", value: "10+", desc: "Images, PDFs, and more" },
     { label: "Processing Speed", value: "<5s", desc: "Average OCR time" },
     { label: "Accuracy Rate", value: "95%+", desc: "For clear text images" }
@@ -68,7 +68,7 @@ export default function About() {
               </h1>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
                 BhashaSetu (भाषा सेतु) means "Language Bridge" in Nepali. We're breaking down language barriers 
-                by making Nepali and Sinhala text accessible through advanced OCR and AI/ML-powered translation.
+                by making text in 30+ languages accessible through advanced OCR and AI/ML-powered translation.
               </p>
             </motion.div>
           </div>
@@ -142,7 +142,7 @@ export default function About() {
                   <h3 className="text-2xl md:text-3xl font-bold mb-4">Our Mission</h3>
                   <p className="text-muted-foreground mb-6 leading-relaxed">
                     We believe language should never be a barrier to accessing information. BhashaSetu empowers 
-                    researchers, students, and professionals to work with Nepali and Sinhala content seamlessly.
+                    researchers, students, and professionals to work with multilingual content seamlessly.
                   </p>
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">

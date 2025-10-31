@@ -52,7 +52,9 @@ export default async function handler(req, res) {
 
 async function translateWithGemini(apiKey, body) {
   const model = process.env.GEMINI_MODEL || "gemini-2.0-flash-exp";
-  const prompt = `Translate the following ${body.source === "si" ? "Sinhala" : body.source === "ne" ? "Nepali" : "Nepali or Sinhala"} text into natural English. Preserve line breaks.`;
+  const sourceLang = getLanguageName(body.source);
+  const targetLang = getLanguageName(body.target);
+  const prompt = `Translate the following ${sourceLang} text into natural ${targetLang}. Preserve line breaks and formatting.`;
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
   
   const response = await fetch(url, {
@@ -82,4 +84,16 @@ ${body.text}` }] }
   }
   
   return { translatedText: text, provider: "gemini" };
+}
+
+function getLanguageName(code) {
+  const langMap = {
+    'en': 'English', 'ne': 'Nepali', 'si': 'Sinhala', 'hi': 'Hindi', 'bn': 'Bengali',
+    'ta': 'Tamil', 'te': 'Telugu', 'ml': 'Malayalam', 'kn': 'Kannada', 'gu': 'Gujarati',
+    'pa': 'Punjabi', 'ur': 'Urdu', 'zh': 'Chinese', 'ja': 'Japanese', 'ko': 'Korean',
+    'ar': 'Arabic', 'fr': 'French', 'de': 'German', 'es': 'Spanish', 'pt': 'Portuguese',
+    'ru': 'Russian', 'it': 'Italian', 'tr': 'Turkish', 'th': 'Thai', 'vi': 'Vietnamese',
+    'id': 'Indonesian', 'ms': 'Malay', 'tl': 'Filipino', 'my': 'Myanmar', 'km': 'Khmer', 'lo': 'Lao'
+  };
+  return langMap[code] || code;
 }

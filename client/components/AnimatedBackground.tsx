@@ -18,8 +18,9 @@ export function AnimatedBackground() {
 
 function LanguageMarquee() {
   const rows = [
-    "नेपाली साहित्य • भाषानुवाद • ज्ञान पहुँच • संस्कृति",
-    "සිංහල සාහිත්‍ය • අනුවාදය • දැනුම ප්‍රවේශය • සංස්කෘතිය",
+    "नेपाली • हिन्दी • বাংলা • தமிழ் • తెలుగు • भाषानुवाद",
+    "සිංහල • 中文 • 日本語 • 한국어 • العربية • Français • Deutsch",
+    "English • Español • Português • Русский • Italiano • Türkçe • ไทย",
   ];
   return (
     <div className="absolute inset-0 opacity-20 select-none">
@@ -27,11 +28,11 @@ function LanguageMarquee() {
         <motion.div
           key={i}
           className="absolute left-[-20%] right-[-20%] top-[30%] md:top-[35%] text-2xl md:text-4xl font-semibold whitespace-nowrap"
-          style={{ top: `calc(${20 + i * 18}% )` }}
+          style={{ top: `calc(${15 + i * 12}% )` }}
           animate={{ x: ["-10%", "10%", "-10%" ] }}
           transition={{ duration: 30 + i * 4, repeat: Infinity, ease: "linear" }}
         >
-          <span className="mx-4 font-[\'Noto Sans Devanagari\'],sans-serif">{text}</span>
+          <span className="mx-4 font-['Noto Sans Devanagari'],sans-serif">{text}</span>
         </motion.div>
       ))}
     </div>

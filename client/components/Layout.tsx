@@ -52,7 +52,7 @@ export default function Layout() {
       <footer className="border-t border-border/50 bg-background/60">
         <div className="container py-8 text-sm text-muted-foreground flex flex-col md:flex-row items-center justify-between gap-3">
           <p>
-            © {new Date().getFullYear()} BhashaSetu. AI/ML OCR + MT for Nepali & Sinhala → English.
+            © {new Date().getFullYear()} BhashaSetu. AI/ML OCR + Translation for 30+ Languages.
           </p>
           <div className="flex items-center gap-4">
             <a className="hover:text-foreground" href="/about">About</a>
